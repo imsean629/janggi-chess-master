@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#1f5f3a">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<title>장기·체스 마스터</title>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="icon-192.png">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id="app">
+  <header class="hero">
+    <h1>장기·체스 마스터</h1>
+    <p>게임을 고르세요. 상대의 수를 입력하면 내 차례에 최선의 수를 추천해 드려요.</p>
+  </header>
+
+  <nav class="games">
+    <a class="game-card janggi" href="janggi.html">
+      <svg class="game-art" viewBox="0 0 120 120" aria-hidden="true">
+        <rect width="120" height="120" rx="16" fill="#e9c987"/>
+        <g stroke="#5a3d1a" stroke-width="2" fill="none">
+          <path d="M20 20H100V100H20Z M20 40H100 M20 60H100 M20 80H100 M40 20V100 M60 20V100 M80 20V100"/>
+          <path d="M40 20L80 60 M80 20L40 60" opacity=".7"/>
+        </g>
+        <polygon points="60,70 70.6,74.4 75,85 70.6,95.6 60,100 49.4,95.6 45,85 49.4,74.4" fill="#eef8ea" stroke="#1f7a3a" stroke-width="3"/>
+        <text x="60" y="86" font-size="18" font-weight="800" text-anchor="middle" dominant-baseline="central" fill="#14612b" font-family="serif">楚</text>
+        <polygon points="60,22 69,25.7 72.7,34.7 69,43.7 60,47.4 51,43.7 47.3,34.7 51,25.7" fill="#fdeeea" stroke="#b3261e" stroke-width="3"/>
+        <text x="60" y="35.5" font-size="15" font-weight="800" text-anchor="middle" dominant-baseline="central" fill="#a11d16" font-family="serif">漢</text>
+      </svg>
+      <div class="game-text">
+        <h2>장기 마스터</h2>
+        <p>초·한 진영과 마·상 차림을 골라 시작</p>
+        <span class="saved" id="saved-janggi" hidden></span>
+      </div>
+      <span class="go" aria-hidden="true">›</span>
+    </a>
+
+    <a class="game-card chess" href="chess.html">
+      <svg class="game-art" viewBox="0 0 120 120" aria-hidden="true">
+        <rect width="120" height="120" rx="16" fill="#f0d9b5"/>
+        <g fill="#b58863">
+          <rect x="30" y="0" width="30" height="30"/><rect x="90" y="0" width="30" height="30"/>
+          <rect x="0" y="30" width="30" height="30"/><rect x="60" y="30" width="30" height="30"/>
+          <rect x="30" y="60" width="30" height="30"/><rect x="90" y="60" width="30" height="30"/>
+          <rect x="0" y="90" width="30" height="30"/><rect x="60" y="90" width="30" height="30"/>
+        </g>
+        <text x="45" y="76" class="art-pc pc-wf">♞&#xFE0E;</text><text x="45" y="76" class="art-pc pc-wl">♘&#xFE0E;</text>
+        <text x="77" y="46" class="art-pc pc-b">♛&#xFE0E;</text>
+      </svg>
+      <div class="game-text">
+        <h2>체스 마스터</h2>
+        <p>백·흑을 골라 표준 배치나 FEN 국면에서 시작</p>
+        <span class="saved" id="saved-chess" hidden></span>
+      </div>
+      <span class="go" aria-hidden="true">›</span>
+    </a>
+  </nav>
+
+  <p class="foot">모든 계산은 이 기기 안에서 이뤄져요. 휴대폰에서는 브라우저 메뉴의 ‘홈 화면에 추가’로 앱처럼 쓸 수 있어요.</p>
+</div>
+<script>
+  (function () {
+    const show = (key, id) => {
+      try {
+        const s = JSON.parse(localStorage.getItem(key));
+        if (s && s.moves && s.moves.length) { const el = document.getElementById(id); el.textContent = `진행 중인 대국 ${s.moves.length}수`; el.hidden = false; }
+      } catch (e) { /* 저장소를 못 쓰면 표시만 생략 */ }
+    };
+    show('janggi-master-v1', 'saved-janggi');
+    show('chess-master-v1', 'saved-chess');
+    if ('serviceWorker' in navigator && location.protocol.startsWith('http')) navigator.serviceWorker.register('sw.js').catch(() => {});
+  })();
+</script>
+</body>
+</html>
