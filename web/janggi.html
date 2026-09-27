@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#1f5f3a">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<title>장기 마스터</title>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="icon-192.png">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id="app">
+
+  <!-- 시작 설정 -->
+  <section id="setup" class="screen">
+    <a class="back" href="index.html">← 게임 선택</a>
+    <header class="hero">
+      <h1>장기 마스터</h1>
+      <p>상대의 수를 직접 입력하면, 내 차례에 최선의 수를 추천해 드려요.</p>
+    </header>
+
+    <div class="card">
+      <h2>내 진영</h2>
+      <div class="seg" id="seg-me" role="radiogroup" aria-label="내 진영">
+        <button type="button" role="radio" data-v="1" class="cho on"><b>초 <small>楚</small></b><span>초록 · 아래 · 선공</span></button>
+        <button type="button" role="radio" data-v="-1" class="han"><b>한 <small>漢</small></b><span>빨강 · 위 · 후공</span></button>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>마·상 배치 (차림)</h2>
+      <p class="hint">각 진영에서 자기 쪽을 기준으로 왼쪽 → 오른쪽 순서입니다.</p>
+      <div class="form-row">
+        <label class="lab cho-t">초 차림</label>
+        <div class="seg small" id="seg-cho" role="radiogroup" aria-label="초 차림"></div>
+      </div>
+      <div class="form-row">
+        <label class="lab han-t">한 차림</label>
+        <div class="seg small" id="seg-han" role="radiogroup" aria-label="한 차림"></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>추천 생각 시간</h2>
+      <div class="seg small" id="seg-time" role="radiogroup" aria-label="생각 시간">
+        <button type="button" role="radio" data-v="1000"><b>빠름</b><span>1초</span></button>
+        <button type="button" role="radio" data-v="3000" class="on"><b>보통</b><span>3초</span></button>
+        <button type="button" role="radio" data-v="8000"><b>깊게</b><span>8초</span></button>
+        <button type="button" role="radio" data-v="20000"><b>최대</b><span>20초</span></button>
+      </div>
+    </div>
+
+    <button id="btn-start" class="primary big" type="button">대국 시작</button>
+    <button id="btn-resume" class="ghost big" type="button" hidden>이어서 두기</button>
+    <p class="foot">엔진은 이 기기 안에서만 계산해요. 서버로 아무것도 보내지 않습니다.</p>
+  </section>
+
+  <!-- 대국 화면 -->
+  <section id="game" class="screen" hidden>
+    <div id="turnbar" class="turnbar">
+      <span id="turn-dot" class="dot"></span>
+      <span id="turn-text"></span>
+      <span id="turn-badge" class="badge" hidden></span>
+    </div>
+
+    <div class="board-wrap">
+      <svg id="board" viewBox="0 0 520 576" role="img" aria-label="장기판"></svg>
+    </div>
+
+    <div class="side">
+    <div class="bar" id="controls">
+      <button id="btn-undo" type="button">↶ 무르기</button>
+      <button id="btn-pass" type="button">한수쉼</button>
+      <button id="btn-flip" type="button">⇅ 뒤집기</button>
+      <button id="btn-menu" type="button">☰ 메뉴</button>
+    </div>
+
+    <div class="card reco" id="reco" aria-live="polite"></div>
+
+    <details class="card" id="history-card">
+      <summary>기보 <small id="hist-count"></small></summary>
+      <ol id="history"></ol>
+    </details>
+
+    <details class="card" id="settings-card">
+      <summary>설정</summary>
+      <div class="setting">
+        <span>생각 시간</span>
+        <select id="sel-time">
+          <option value="1000">빠름 (1초)</option>
+          <option value="3000">보통 (3초)</option>
+          <option value="8000">깊게 (8초)</option>
+          <option value="20000">최대 (20초)</option>
+        </select>
+      </div>
+      <label class="setting"><span>상대 차례에도 예상 수 보기</span><input type="checkbox" id="chk-opp"></label>
+      <div class="setting"><span>추천 후보 수</span>
+        <select id="sel-pv"><option value="1">1개</option><option value="2">2개</option><option value="3" selected>3개</option></select>
+      </div>
+    </details>
+    </div>
+  </section>
+</div>
+
+<!-- 메뉴 다이얼로그 -->
+<dialog id="dlg-menu">
+  <form method="dialog">
+    <h3>메뉴</h3>
+    <button id="menu-new" class="primary" value="new">새 대국 설정으로 돌아가기</button>
+    <button id="menu-restart" value="restart">같은 설정으로 다시 시작</button>
+    <button value="home">게임 선택 화면으로</button>
+    <button value="close" class="ghost">닫기</button>
+  </form>
+</dialog>
+
+<script src="janggi-engine.js"></script>
+<script src="janggi-app.js"></script>
+</body>
+</html>
